@@ -1,0 +1,46 @@
+2015-10-27  IKENO Naoki  <nao@kyo-to.net>
+
+	* index.php:
+	PHPでユーザログインのためのフォームとかの部分だけを作る
+
+	テーブル
+	users:
+	cd, sirial, Primary,
+	id, text, アカウント名
+	pass, text, ハッシュパスワード、
+	level, int, アカウントレベル
+	name, text, 表示名
+	mail, text, メールアドレス
+	regdate, date
+	moddate, date
+
+	levels:
+	cd, int, primary
+	name, text
+
+	・index.php
+	ユーザログイン画面、ログインしていれば権限を表示、ログアウトボタンを表示
+	・setting.php
+	設定変更画面、アカウント変更不可、パスワード変更、表示名変更,
+	ver2: 変更したら確認メールの送信機能
+
+	・admin.php
+	アカウント管理画面
+	アカウントの作成、パスワードの初期化
+
+	ver.1
+	ユーザのログイン、ログアウトができる、アカウント設定の変更ができる
+
+	ver.2
+	管理者ログインと、アカウントの作成、パスワードリセット
+
+	ver.3
+	ユーザがアカウント変更したときにメール認証
+
+	ver.4
+	アカウント登録時にメール認証
+
+	
+	
+
+

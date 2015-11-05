@@ -1,3 +1,13 @@
+2015-11-05  IKENO Naoki  <nao@kyo-to.net>
+
+	* test.php:
+	ログイン、ログアウト、ログイン状態のチェック
+
+	次はユーザアカウント管理の作成？
+	
+	
+	
+
 2015-10-27  IKENO Naoki  <nao@kyo-to.net>
 
 	* index.php:
@@ -6,7 +16,7 @@
 	テーブル
 	users:
 	cd, sirial, Primary,
-	id, text, アカウント名
+	account, text, アカウント名
 	pass, text, ハッシュパスワード、
 	level, int, アカウントレベル
 	name, text, 表示名

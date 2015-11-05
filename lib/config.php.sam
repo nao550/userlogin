@@ -1,1 +1,11 @@
 # Configfiles
+<?php
+$CFG['SITE_NAME'] = 'モーリス';
+$CFG['DBSV'] = 'localhost';
+$CFG['DBNM'] = 'userlist';
+$CFG['DBUSR'] = 'userlist';
+$CFG['DBPASS'] = '5KS2WGTjL6JnMLDd';
+
+$CFG['HOME'] = '/home/nao/public_html/userlist/';
+
+

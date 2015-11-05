@@ -1,7 +1,7 @@
 2015-10-27  IKENO Naoki  <nao@kyo-to.net>
 
 	* index.php:
-	PHPでユーザログインのためのフォームとかの部分だけを作る
+	PHPでユーザログインのためのフォームとかの部分だ	けを作る
 
 	テーブル
 	users:

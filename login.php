@@ -1,5 +1,46 @@
+<?php
+include_once 'config.php';
+include_once 'lib/function.php';
+include_once 'lib/accountlib.php';
+session_start();
+$errormode = 0;
+
+// ログイン処理
+if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
+  if ( ! isset($_POST['account']) ||  ! isset($_POST['password'])){
+    $errormode = 1;
+  }
+
+  // エラーなしなのでログインチャレンジ
+  if ( $errormode == 0 ){ 
+    $account = h($_POST['account']);
+    $password = h($_POST['password']);
+    $ac = new ACCOUNT;
+    $userdata = $ac->AccountCheck( $account, $password);
+  }
+
+  // ログインの確認
+  if ( ($userdata !== FALSE) ){
+    $_SESSION['account'] = $account;
+    $_SESSION['name'] = h($userdata['name']);
+    $_SESSION['level'] = h($userdata['level']);
+  } else {
+    $_SESSION['account'] = '';
+    $_SESSION['name'] = '';
+    $_SESSION['level'] = '';
+    $errormode = 2;
+  }
+}
+
+// ログインに成功すれば最初のページへ
+isset( $_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
+if ( $name !== '') {
+     header('Location:' . $CFG['HOMEPATH'] . '/index.php');
+}
+
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,22 +82,31 @@
 
     <div class="container">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-	<label for="inputEmail" class="sr-only">Email address</label>
-	<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-	<label for="inputPassword" class="sr-only">Password</label>
-	<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <form class="form-signin" action="login.php" method="POST">
+        <h2 class="form-signin-heading">ログイン</h2>
+	<label for="inputEmail" class="sr-only">メールアドレス：</label>
+	<input type="email" id="inputEmail" name="account" class="form-control" placeholder="Email address" required autofocus>
+	<label for="inputPassword" class="sr-only">パスワード：</label>
+	<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+<!--
 	<div class="checkbox">
 	  <label>
-	    <input type="checkbox" value="remember-me"> Remember me
+	    <input type="checkbox" value="remember-me"> ログインしたままにする 
 	  </label>
 	</div>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+-->
+	<input type="hidden" name="mode" value="login">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">ログイン</button>
+	<?php
+	if ( $errormode === 1 ){
+	  print("	<p class=\"bg-denger\">メールアドレスとパスワードを入力してください。</p>");
+	} else if ( $errormode === 2 ) {
+	  print("	<p class=\"bg-denger\">メールアドレスかパスワードが違います。</p>");
+	}
+	?>
       </form>
 
     </div> <!-- /container -->
-
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>

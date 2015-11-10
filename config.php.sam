@@ -4,8 +4,8 @@ $CFG['SITE_NAME'] = 'ユーザログインフォーム';
 $CFG['DBSV'] = 'localhost';
 $CFG['DBNM'] = 'userlist';
 $CFG['DBUSER'] = 'userlist';
-$CFG['DBPASS'] = '5KS2WGTjL';
-$CFG['HOME'] = '/var/http/html';
+$CFG['DBPASS'] = '5KS2WGTjL6JnMLDd';
+$CFG['HOME'] = '';
 $CFG['PWDSALT'] = '6a46df4s4s3g4sd86g486rrweg64are6';
 $CFG['STRETCHCUNT'] = 3;
 

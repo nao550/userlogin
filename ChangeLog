@@ -1,3 +1,9 @@
+2015-11-10  IKENO Naoki  <nao@kyo-to.net>
+
+	* login.php:
+	ログインフォーム、ログアウト、ログイン状態のチェック完成
+	
+
 2015-11-05  IKENO Naoki  <nao@kyo-to.net>
 
 	* test.php:

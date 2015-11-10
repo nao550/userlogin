@@ -1,11 +1,15 @@
 <?PHP
+include_once 'config.php';
+include_once 'lib/function.php';
+include_once 'lib/accountlib.php';
+
 session_start();
 
+isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 
-
->
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -60,9 +64,17 @@ session_start();
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
-            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+	    <?php
+	    if ( $name !== '' ){
+              print('<li class="dropdown">');
+	      print('<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' . $name . '<span class="caret"></span></a>');
+	      print('<ul class="dropdown-menu">');
+	      print("<li><a href=\"setting.php\">設定</a></li>");
+              print("<li><a href=\"logout.php\">ログアウト</a></li>\n");
+	    } else {
+	      print("<li><a href=\"./login.php\">ログイン</a></li>\n");
+	    }
+          ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

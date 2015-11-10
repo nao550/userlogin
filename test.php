@@ -72,6 +72,7 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
   echo $stat; echo "<br>";
   echo var_dump( $_POST );
   echo var_dump( $_GET );
+  echo var_dump( page_url_path());
   
 ?>
 

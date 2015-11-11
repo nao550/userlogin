@@ -24,6 +24,29 @@ class ACCOUNT {
     return $userdata;
   }
 
+  function isAccount( $account ){
+    // アカウントがあれば、true, なければ false
+    global $CFG;
+
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("SELECT name FROM users WHERE account = :account");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':account', $account, PDO::PARAM_STR);
+      $stmt->execute();
+      $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+
+    if ( $userdata ){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   private function get_password_hash($account, $pwd) {
     global $CFG;

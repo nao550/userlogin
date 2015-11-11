@@ -4,10 +4,21 @@ include_once 'lib/function.php';
 include_once 'lib/accountlib.php';
 
 session_start();
+$errormode = 0;
 
 isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 if ( $name !== '' ){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
+}
+
+if ( isset($_POST['email']) ){
+  $ac = new ACCOUNT;
+  if ( $ac->isAccount(h($_POST['email']))) {
+    $email = h($_POST['email']);
+    $errormode = 1;
+  } else {
+    $errormode = 0;
+  }
 }
 
 ?>
@@ -85,10 +96,22 @@ if ( $name !== '' ){
 	    <div class="form-group">
 	      <label for="email" class="col-sm-3 control-label">メールアドレス</label>
 	      <div class="col-sm-9">
-		<input type="email" id="email" name="email" class="form-control"  placeholder="メールアドレスを入力してください">
+		<input type="email" id="email" name="email" class="form-control"  placeholder="メールアドレスを入力してください" <?php if(isset($email)) print("value=\"" . $email . "\""); ?>>
 	      </div>
 	    </div>
-
+	    <?php
+	    if ($errormode === 1){
+	      print <<< EOL
+	      <div class="col-sm-offset-3 col-sm-9">
+	      <p class="bg-danger mailerror">
+	      アドレスはすでに存在します.
+	    </p>
+	    </div>
+EOL;
+	    }
+	      
+	      ?>
+	    
 	    <div class="form-group">	    	  
 	      <label for="password1" class="control-label col-sm-3">パスワード</label>
 	      <div class="col-sm-9">

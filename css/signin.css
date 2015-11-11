@@ -43,3 +43,11 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.mailerror {
+  padding: 12px;
+  margin: 0px 12px 20px 10px;
+  border-radius: 5px;        /* CSS3草案 */
+    -webkit-border-radius: 5px;    /* Safari,Google Chrome用 */
+    -moz-border-radius: 5px;   /* Firefox用 */  
+}

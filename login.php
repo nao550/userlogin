@@ -16,7 +16,7 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
     $account = h($_POST['account']);
     $password = h($_POST['password']);
     $ac = new ACCOUNT;
-    $userdata = $ac->AccountCheck( $account, $password);
+    $userdata = $ac->Login( $account, $password);
   }
 
   // ログインの確認

@@ -3,11 +3,9 @@ include_once 'config.php';
 
 class ACCOUNT {
 
-  function LoginChk( array $SESSION ){
-    
-  }
   
-  function AccountCheck( $account, $pwd ){
+  function Login( $account, $pwd ){
+    // ログインできれば、ユーザ情報が、できなければ false がかえる
     global $CFG;
 
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
@@ -25,7 +23,6 @@ class ACCOUNT {
     }
     return $userdata;
   }
-
 
 
   private function get_password_hash($account, $pwd) {

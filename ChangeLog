@@ -1,7 +1,15 @@
 2015-11-11  IKENO Naoki  <nao@kyo-to.net>
 
 	* signin.php
-	アドレス存在チェックとエラーの表示
+	アドレス存在チェックとエラーの表示 ok
+	パスワード入力チェック ok
+	パスワード長チェック ok
+	パスワードマッチチェック ok 
+	名前入力チェック ok
+
+	next: ログイン処理
+	
+	task: パスワード長を config で設定できるようにする。
 
 	* login.php (if):
 	accountlib.php の

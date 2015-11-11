@@ -11,15 +11,53 @@ if ( $name !== '' ){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
 }
 
-if ( isset($_POST['email']) ){
-  $ac = new ACCOUNT;
-  if ( $ac->isAccount(h($_POST['email']))) {
-    $email = h($_POST['email']);
+if (isset($_POST['mode'])){
+
+  // メールアドレス入力チェック
+  isset($_POST['email'])? $email = h($_POST['email']) : $email = '';
+  if ( $email !== '' ){
+    $ac = new ACCOUNT;
+    if ( $ac->isAccount($email)) {
+      $errormode = 1;
+      $mail_er = 1;  // アドレス重複エラー
+    } else {
+      $errormode = 0;
+      $mail_er = 0;    
+    }
+  } else {
+  echo "inmode.;;" . $email ;
     $errormode = 1;
+    $mail_er = 2;  // アドレス入力なしエラー
+  }
+
+  // パスワードチェック
+  isset($_POST['password1'])? $pwd1 = h($_POST['password1']) : $pwd1 = '';
+  isset($_POST['password2'])? $pwd2 = h($_POST['password2']) : $pwd2 = '';	
+  if ( $pwd1 === '' || $pwd2 === '' ) {
+    $errormode = 2;
+    $pass_er = 1; // パスワード入力不足エラー
+  } else if ( strlen($pwd1) < 6 || strlen($pwd1) > 20 ||
+	      strlen($pwd2) < 6 || strlen($pwd2) > 20 ) {
+    $errormode = 2;
+    $pass_er = 2; // パスワード長エラー
+  } else if ( $pwd1 !== $pwd2 ) {
+    $errormode = 2;
+    $pass_er = 3; // パスワードミスマッチエラー
   } else {
     $errormode = 0;
   }
+
+  // 名前入力チェック
+  isset($_POST['sei'])? $sei = h($_POST['sei']) : $sei = '';
+  isset($_POST['mei'])? $mei = h($_POST['mei']) : $mei = '';
+  if ( $sei === '' || $mei === '' ) {
+    $errormode = 1;
+    $name_er = 1;
+  }
 }
+
+// ログイン処理
+
 
 ?>
 <!DOCTYPE html>
@@ -46,6 +84,8 @@ if ( isset($_POST['email']) ){
     <link href="./css/bootstrap-template.css" rel="stylesheet">
     <link href="./css/signin.css" rel="stylesheet">
 
+    <script src="./js/signini.js"></script>
+    
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]>
     <script src="./js/ie8-responsive-file-warning.js"></script>
@@ -90,7 +130,7 @@ if ( isset($_POST['email']) ){
 
 	<div class="signin-form">
 
-	  <form action="#" method="POST" name="form-signin" class="form-horizontal">
+	  <form action="#" method="POST" id="form-signini" name="form-signin" class="form-horizontal">
 	    <h2>利用者登録</h2>
 
 	    <div class="form-group">
@@ -100,41 +140,100 @@ if ( isset($_POST['email']) ){
 	      </div>
 	    </div>
 	    <?php
-	    if ($errormode === 1){
-	      print <<< EOL
-	      <div class="col-sm-offset-3 col-sm-9">
-	      <p class="bg-danger mailerror">
-	      アドレスはすでに存在します.
-	    </p>
-	    </div>
+	    if (isset($mail_er)){
+	      if ($mail_er === 1 ){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		アドレスはすでに存在します.
+	        </p>
+		</div>
 EOL;
+	      } else if  ($mail_er === 2){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		メールアドレスを入力してください.
+	        </p>
+		</div>
+EOL;
+	      }
 	    }
-	      
 	      ?>
 	    
 	    <div class="form-group">	    	  
 	      <label for="password1" class="control-label col-sm-3">パスワード</label>
 	      <div class="col-sm-9">
-		<input type="password" name="password1" class="form-control" placeholder="パスワードを入力してください">
+		<input type="password" id="password1" name="password1" class="form-control" placeholder="パスワードを入力してください">
 	      </div>
 	    </div>
 
 	    <div class="form-group">	    	  
 	      <label for="password2" class="control-label col-sm-3">パスワード再入力</label>
 	      <div class="col-sm-9">
-		<input type="password" name="password1" class="form-control" placeholder="パスワードを再入力してください">
+		<input type="password" id="password2" name="password2" class="form-control" placeholder="パスワードを再入力してください">
 	      </div>
 	    </div>
+	         
+	    <?php
+	    if (isset($pass_er)){
+	      if ($pass_er === 1){
+	      print <<< EOL
+	      <div class="col-sm-offset-3 col-sm-9">
+	        <p class="bg-danger mailerror">
+	        パスワードを入力してください。
+	        </p>
+	      </div>
+EOL;
+	      }
+	      if ( $pass_er === 2) {
+	        print <<< EOL
+	        <div class="col-sm-offset-3 col-sm-9">
+	          <p class="bg-danger mailerror">
+	          パスワードは6文字以上20文字以下で入力してください。
+	          </p>
+  	        </div>
+EOL;
+	      }
+	      if ( $pass_er === 3 ) {
+	        print <<< EOL
+	        <div class="col-sm-offset-3 col-sm-9">
+	          <p class="bg-danger mailerror">
+	          パスワードが一致しません。
+	          </p>
+	        </div>
+EOL;
+	      }
+	    }
+	      ?>
 
+
+	    
 	    <div class="form-group">	    	  
 	      <label for="sei" class="control-label col-sm-3">お名前</label>
 	      <div class="col-sm-4">
-		<input type="sei" name="sei" class="form-control" placeholder="姓">
+		<input type="sei" id="sei" name="sei" class="form-control" placeholder="姓" value="<?php 
+		if (isset($sei)) { echo $sei; } else {  echo '';};?>">
 	      </div>
 	      <div class="col-sm-4">
-		<input type="mei" name="mei" class="form-control" placeholder="名">
+		<input type="mei" id="mei" name="mei" class="form-control" placeholder="名" value="<?php 
+		if (isset($mei)) { echo $mei; } else {  echo '';};?>">
 	      </div>
 	    </div>
+
+	    <?php
+	    if (isset($name_er)){
+	      if ($name_er === 1 ){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		姓、名を入力してください。
+	        </p>
+		</div>
+EOL;
+	      }
+	    }
+	      ?>
 
 <!--
 	    <div class="form-group">
@@ -149,11 +248,11 @@ EOL;
 -->
 	    <div class="form-group">
 	      <div class="col-sm-offset-3 col-sm-10">
-		<button type="submit" class="btn btn-default">登録</button>
+		<button type="submit" id="sbumit_sign" class="btn btn-default">登録</button>
 	      </div>
 	    </div>
 		    
-
+	    <input type="hidden" class="form-control" name="mode" value="submit">
 	  </form>
 	</div>
       </div>

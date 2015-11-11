@@ -1,3 +1,11 @@
+2015-11-11  IKENO Naoki  <nao@kyo-to.net>
+
+	* signin.php:
+	signin.phpの追加、bootstrapによるform画面の作成
+	next: サインイン処理の作成
+	
+	
+
 2015-11-10  IKENO Naoki  <nao@kyo-to.net>
 
 	* login.php:

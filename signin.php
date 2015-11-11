@@ -6,6 +6,9 @@ include_once 'lib/accountlib.php';
 session_start();
 
 isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
+if ( $name !== '' ){
+  header('Location:' . $CFG['HOMEPATH'] . '/index.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -15,12 +18,12 @@ isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="description" content="">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="./favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>利用者登録</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
@@ -30,6 +33,7 @@ isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 
     <!-- Custom styles for this template -->
     <link href="./css/bootstrap-template.css" rel="stylesheet">
+    <link href="./css/signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]>
@@ -63,34 +67,75 @@ isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-	    <?php
-	    if ( $name !== '' ){
-              print('<li class="dropdown">');
-	      print('<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' . $name . '<span class="caret"></span></a>');
-	      print('<ul class="dropdown-menu">');
-	      print("<li><a href=\"setting.php\">設定</a></li>");
-              print("<li><a href=\"logout.php\">ログアウト</a></li>\n");
-	    } else {
-	      print("<li><a href=\"./signin.php\">登録</a></li>\n");
-	      print("<li><a href=\"./login.php\">ログイン</a></li>\n");
-	    }
-          ?>
-          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
 
-      <div class="starter-template">
-        <h1>ログイン</h1>
-        <p class="lead">
-	  PHPによるログイン画面あたりの実装
-	  
-	</p>
+      <div class="col-sm-2"></div>
+
+      <div class="col-sm-8 signin">
+
+	<div class="signin-form">
+
+	  <form action="#" method="POST" name="form-signin" class="form-horizontal">
+	    <h2>利用者登録</h2>
+
+	    <div class="form-group">
+	      <label for="email" class="col-sm-3 control-label">メールアドレス</label>
+	      <div class="col-sm-9">
+		<input type="email" id="email" name="email" class="form-control"  placeholder="メールアドレスを入力してください">
+	      </div>
+	    </div>
+
+	    <div class="form-group">	    	  
+	      <label for="password1" class="control-label col-sm-3">パスワード</label>
+	      <div class="col-sm-9">
+		<input type="password" name="password1" class="form-control" placeholder="パスワードを入力してください">
+	      </div>
+	    </div>
+
+	    <div class="form-group">	    	  
+	      <label for="password2" class="control-label col-sm-3">パスワード再入力</label>
+	      <div class="col-sm-9">
+		<input type="password" name="password1" class="form-control" placeholder="パスワードを再入力してください">
+	      </div>
+	    </div>
+
+	    <div class="form-group">	    	  
+	      <label for="sei" class="control-label col-sm-3">お名前</label>
+	      <div class="col-sm-4">
+		<input type="sei" name="sei" class="form-control" placeholder="姓">
+	      </div>
+	      <div class="col-sm-4">
+		<input type="mei" name="mei" class="form-control" placeholder="名">
+	      </div>
+	    </div>
+
+<!--
+	    <div class="form-group">
+	      <div class="col-sm-offset-3 col-sm-9">
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox"> Remember me
+		  </label>
+		</div>
+	      </div>
+	    </div>
+-->
+	    <div class="form-group">
+	      <div class="col-sm-offset-3 col-sm-10">
+		<button type="submit" class="btn btn-default">登録</button>
+	      </div>
+	    </div>
+		    
+
+	  </form>
+	</div>
       </div>
 
+      <div class="col-sm-2"></div>
     </div><!-- /.container -->
 
 

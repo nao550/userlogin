@@ -72,7 +72,7 @@ isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 	      print("<li><a href=\"setting.php\">設定</a></li>");
               print("<li><a href=\"logout.php\">ログアウト</a></li>\n");
 	    } else {
-	      print("<li><a href=\"./signin.php\">登録</a></li>\n");
+	      print("<li><a href=\"./signup.php\">登録</a></li>\n");
 	      print("<li><a href=\"./login.php\">ログイン</a></li>\n");
 	    }
           ?>

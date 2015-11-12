@@ -1,3 +1,11 @@
+2015-11-12  IKENO Naoki  <nao@kyo-to.net>
+
+	* signin.php:
+	初期画面で利用者登録→[登録]ボタンで確認メール送信→メールのコード入力→登録完了
+
+	signin.php -> signup.php に修正 ok
+	
+
 2015-11-11  IKENO Naoki  <nao@kyo-to.net>
 
 	* signin.php
@@ -56,6 +64,13 @@
 	levels:
 	cd, int, primary
 	name, text
+
+	sessions:
+	cd, sirial prikey
+	ssid, test50, セッションID
+	regcode, text10, 登録コード
+	regdate, date
+	
 
 	・index.php
 	ユーザログイン画面、ログインしていれば権限を表示、ログアウトボタンを表示

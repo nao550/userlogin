@@ -11,7 +11,9 @@ if ( $name !== '' ){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
 }
 
-if (isset($_POST['mode'])){
+isset($_POST['mode'])? $mode = h($_POST['mode']) : $mode = '';
+
+if ( $mode !== '' ){
 
   // メールアドレス入力チェック
   isset($_POST['email'])? $email = h($_POST['email']) : $email = '';
@@ -25,14 +27,13 @@ if (isset($_POST['mode'])){
       $mail_er = 0;    
     }
   } else {
-  echo "inmode.;;" . $email ;
     $errormode = 1;
     $mail_er = 2;  // アドレス入力なしエラー
   }
 
   // パスワードチェック
-  isset($_POST['password1'])? $pwd1 = h($_POST['password1']) : $pwd1 = '';
-  isset($_POST['password2'])? $pwd2 = h($_POST['password2']) : $pwd2 = '';	
+  isset($_POST['pwd1'])? $pwd1 = h($_POST['pwd1']) : $pwd1 = '';
+  isset($_POST['pwd2'])? $pwd2 = h($_POST['pwd2']) : $pwd2 = '';	
   if ( $pwd1 === '' || $pwd2 === '' ) {
     $errormode = 2;
     $pass_er = 1; // パスワード入力不足エラー
@@ -54,9 +55,16 @@ if (isset($_POST['mode'])){
     $errormode = 1;
     $name_er = 1;
   }
+
+  // アカウト登録処理
+  if ( $mode === 'submit' && $errormode === 0 ){
+    $ac = new ACCOUNT;
+    $ac->addAccount( $email, $pwd1, $sei, $mei, $email );
+    $mode = 'addaccount';
+  }
+
 }
 
-// ログイン処理
 
 
 ?>
@@ -114,7 +122,7 @@ if (isset($_POST['mode'])){
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="./index.php">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
@@ -128,8 +136,11 @@ if (isset($_POST['mode'])){
 
       <div class="col-sm-8 signin">
 
-	<div class="signin-form">
+	<?php
+	if ( $mode !== 'addaccount' ){ // サインイン画面の表示
+	?>
 
+	<div class="signin-form">
 	  <form action="#" method="POST" id="form-signini" name="form-signin" class="form-horizontal">
 	    <h2>利用者登録</h2>
 
@@ -162,16 +173,16 @@ EOL;
 	      ?>
 	    
 	    <div class="form-group">	    	  
-	      <label for="password1" class="control-label col-sm-3">パスワード</label>
+	      <label for="pwd1" class="control-label col-sm-3">パスワード</label>
 	      <div class="col-sm-9">
-		<input type="password" id="password1" name="password1" class="form-control" placeholder="パスワードを入力してください">
+		<input type="password" id="pwd1" name="pwd1" class="form-control" placeholder="パスワードを入力してください">
 	      </div>
 	    </div>
 
 	    <div class="form-group">	    	  
-	      <label for="password2" class="control-label col-sm-3">パスワード再入力</label>
+	      <label for="pwd2" class="control-label col-sm-3">パスワード再入力</label>
 	      <div class="col-sm-9">
-		<input type="password" id="password2" name="password2" class="form-control" placeholder="パスワードを再入力してください">
+		<input type="password" id="pwd2" name="pwd2" class="form-control" placeholder="パスワードを再入力してください">
 	      </div>
 	    </div>
 	         
@@ -255,6 +266,24 @@ EOL;
 	    <input type="hidden" class="form-control" name="mode" value="submit">
 	  </form>
 	</div>
+
+	<?php
+	} else if ( $mode === 'addaccount' ){
+	?>
+	<div class="form-signin">
+	  <p>アカウント登録が完了しました。<br />
+	    登録いただいたアドレス宛にメールを送信しておりますので、
+	    本文中にあるリンクをクリックしてアドレスの確認を
+	    してください。
+	  </p>
+	  <P>
+	    ひきつづきプロファイル登録よりプロファイルの登録を
+	    してください。
+	  </p>
+	</div>
+	<?php
+	}
+	?>
       </div>
 
       <div class="col-sm-2"></div>

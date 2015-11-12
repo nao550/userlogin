@@ -11,10 +11,10 @@ class ACCOUNT {
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("SELECT name, level FROM users WHERE account = :account AND pass = :pass");
+      $sql = ("SELECT name, level FROM users WHERE account = :account AND password = :password");
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':account', $account, PDO::PARAM_STR);
-      $stmt->bindValue(':pass', $pwd, PDO::PARAM_STR);
+      $stmt->bindValue(':password', $pwd, PDO::PARAM_STR);
       $stmt->execute();
       $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
     }catch (PDOException $e){
@@ -24,6 +24,29 @@ class ACCOUNT {
     return $userdata;
   }
 
+  function addAccount( $account, $pwd, $sei, $mei, $email ){
+    // アカウント追加ができればtrue, できなければ false
+    global $CFG;
+
+    $name = $sei . " " . $mei;
+    
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("INSERT INTO users (account, name, password, email) VALUES ( :account, :name, :password, :email)");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':account', $account, PDO::PARAM_STR);
+      $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+      $stmt->bindValue(':password', $pwd, PDO::PARAM_STR);
+      $stmt->bindValue(':email', $email, PDO::PARAM_STR);      
+      $stmt->execute();
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+    return true;
+  }
+  
   function isAccount( $account ){
     // アカウントがあれば、true, なければ false
     global $CFG;

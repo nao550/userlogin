@@ -21,7 +21,7 @@ if ( $name === '' ) {
 <html lang="ja">
   <head>
     <title>ログアウト</title>
-    <meta httpequiv="refresh" content="5; <?= $CFG['HOMEPATH'] ?>" />
+    <meta http-equiv="refresh" content="5; <?= $CFG['HOMEPATH'] ?>" />
   </head>
   
 <body>

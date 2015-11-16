@@ -1,3 +1,14 @@
+2015-11-16  IKENO Naoki  <nao@kyo-to.net>
+
+	* lib/accountlib.php (ACCOUNT):
+	addAcount の修正、パスワードハッシュ化
+	login もハッシュ化の修正
+	userlist テーブルフィールドの変更
+	level -> usertype_cd 
+	
+
+	* index.php: 
+
 2015-11-12  IKENO Naoki  <nao@kyo-to.net>
 
 	* signup.php:

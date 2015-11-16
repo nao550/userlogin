@@ -32,6 +32,7 @@ if ( $mode !== '' ){
   }
 
   // パスワードチェック
+  // TODO: パスワード長の設定をconfig設定化する
   isset($_POST['pwd1'])? $pwd1 = h($_POST['pwd1']) : $pwd1 = '';
   isset($_POST['pwd2'])? $pwd2 = h($_POST['pwd2']) : $pwd2 = '';	
   if ( $pwd1 === '' || $pwd2 === '' ) {
@@ -61,6 +62,9 @@ if ( $mode !== '' ){
     $ac = new ACCOUNT;
     $ac->addAccount( $email, $pwd1, $sei, $mei, $email );
     $mode = 'addaccount';
+    $_SESSION['account'] = $email;
+    $_SESSION['name'] = $sei . " " . $mei;
+    $_SESSION['level'] = '1';
   }
 
 }
@@ -268,7 +272,7 @@ EOL;
 	</div>
 
 	<?php
-	} else if ( $mode === 'addaccount' ){
+	} else if ( $mode === 'addaccount' ){ // アカウント登録完了画面
 	?>
 	<div class="form-signin">
 	  <p>アカウント登録が完了しました。<br />
@@ -282,8 +286,9 @@ EOL;
 	  </p>
 	</div>
 	<?php
-	}
+	} // 画面表示終了
 	?>
+
       </div>
 
       <div class="col-sm-2"></div>

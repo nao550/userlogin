@@ -70,9 +70,10 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
   echo var_dump( $_SESSION );
   echo "</pre>";
   echo $stat; echo "<br>";
-  echo var_dump( $_POST );
-  echo var_dump( $_GET );
-  echo var_dump( page_url_path());
+  print_r( page_url_path() . "<br />\n");
+
+  $date = date("Y-m-d");
+  echo $date;
   
 ?>
 

@@ -25,7 +25,7 @@ class ACCOUNT {
     return $userdata;
   }
 
-  function addAccount( $account, $pwd, $sei, $mei, $email ){
+  function addAccount( $account, $pwd, $sei, $mei, $email, $sid ){
     // アカウント追加ができればtrue, できなければ false
     global $CFG;
 
@@ -50,6 +50,7 @@ class ACCOUNT {
       print('Error:'.$e->getMessage());
       die();
     }
+     //      $this->chkMail( $email, $sid );    
     return true;
   }
   
@@ -77,6 +78,7 @@ class ACCOUNT {
     }
   }
 
+
   private function get_password_hash($account, $pwd) {
     global $CFG;
 
@@ -87,6 +89,7 @@ class ACCOUNT {
     }
     return $hash;
   }
+
 
   
 }

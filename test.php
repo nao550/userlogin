@@ -39,7 +39,7 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
     $password = h($_POST['password']);
 
     $ac = new ACCOUNT;
-    $userdata = $ac->AccountCheck( $account, $password);
+    $userdata = $ac->Login( $account, $password);
     $stat = $stat . 'mode : user account check.<br />';
   }
 
@@ -47,13 +47,21 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
   if ( isset($userdata)){
     $_SESSION['account'] = $account;
     $_SESSION['name'] = h($userdata['name']);
-    $_SESSION['level'] = h($userdata['level']);
+    $_SESSION['usertype_cd'] = h($userdata['usertype_cd']);
     $stat = $stat . 'mode : succsess user login.<br />';
+    include_once 'lib/mailaddrlib.php';
+    $smail = new MailAddr;
+    $smail->chkMailSend( $account, $_SESSION['id']);
+    echo 'mailsend.';
   } else {
     $_SESSION['account'] = '';
     $_SESSION['name'] = '';
     $_SESSION['level'] = '';
   }
+}
+
+foreach (array("id", "account","name") as $v){
+  $p[$v] = filter_input(INPUT_GET, $v);
 }
 
 ?>
@@ -68,6 +76,7 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
 
   echo "<pre>";
   echo var_dump( $_SESSION );
+  echo var_dump($p);
   echo "</pre>";
   echo $stat; echo "<br>";
   print_r( page_url_path() . "<br />\n");

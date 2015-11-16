@@ -60,7 +60,7 @@ if ( $mode !== '' ){
   // アカウト登録処理
   if ( $mode === 'submit' && $errormode === 0 ){
     $ac = new ACCOUNT;
-    $ac->addAccount( $email, $pwd1, $sei, $mei, $email );
+    $ac->addAccount( $email, $pwd1, $sei, $mei, $email, $_SESSION['id'] );
     $mode = 'addaccount';
     $_SESSION['account'] = $email;
     $_SESSION['name'] = $sei . " " . $mei;

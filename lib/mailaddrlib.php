@@ -36,16 +36,15 @@ class MailAddr {
     
   }
   
-  function chkMailSid( $email, $sid = ''){
+  function chkMailSid( $sid = ''){
     // $email のチェック
     global $CFG;
 
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("SELECT name, usertype_cd FROM users WHERE email = :email AND sid = $sid");
+      $sql = ("SELECT name, usertype_cd, email FROM users WHERE sid = $sid");
       $stmt = $pdo->prepare($sql);
-      $stmt->bindValue(':email', $email, PDO::PARAM_STR);
       $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
       $stmt->execute();
       $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -54,7 +53,7 @@ class MailAddr {
       die();
     }
     if ( $userdata === FALSE ) {
-      return 0; // email, SID がなし
+      return 0; //  SID がなし
     } else if ( $userdata['usertype_cd'] > 0 ) {
       return 1;   // 登録ずみ
     } else if ( $userdata['usertype_cd'] < 0 ) {
@@ -62,16 +61,15 @@ class MailAddr {
     } 
   }
 
-  function AuthMail( $email, $sid = ''){
+  function AuthMail( $sid = ''){
     // $email の登録
     global $CFG;
 
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("UPDATE users SET usertype_cd = '1' WHERE email = :email AND sid = $sid");
+      $sql = ("UPDATE users SET usertype_cd = '1' WHERE sid = $sid");
       $stmt = $pdo->prepare($sql);
-      $stmt->bindValue(':email', $email, PDO::PARAM_STR);
       $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
       $stmt->execute();
     }catch (PDOException $e){

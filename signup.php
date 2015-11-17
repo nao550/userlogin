@@ -2,6 +2,7 @@
 include_once 'config.php';
 include_once 'lib/function.php';
 include_once 'lib/accountlib.php';
+include_once 'lib/mailaddrlib.php';
 
 session_start();
 $errormode = 0;
@@ -59,8 +60,15 @@ if ( $mode !== '' ){
 
   // アカウト登録処理
   if ( $mode === 'submit' && $errormode === 0 ){
+    // アカウント登録
     $ac = new ACCOUNT;
     $ac->addAccount( $email, $pwd1, $sei, $mei, $email, $_SESSION['id'] );
+
+    $name = $sei . ' ' . $meil;
+    // 確認メールの送信
+    $mailsend = new MailAddr;
+    $mailsend->chkAddrMailSend( $email, $name, $sid);
+    
     $mode = 'addaccount';
     $_SESSION['account'] = $email;
     $_SESSION['name'] = $sei . " " . $mei;

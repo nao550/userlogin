@@ -1,5 +1,12 @@
 2015-11-17  IKENO Naoki  <nao@kyo-to.net>
 
+	* chksid.php :
+	next:git 作成したので動作チェックする
+	
+	* signup.php :
+	処理しているクラスの返り値のチェックは必要ないか？
+	
+
 	* lib/mailaddrlib.php (MailAddr):
 	メールのテンプレート送信の機能の追加
 	

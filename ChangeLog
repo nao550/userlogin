@@ -1,3 +1,11 @@
+2015-11-17  IKENO Naoki  <nao@kyo-to.net>
+
+	* lib/mailaddrlib.php (MailAddr):
+	メールのテンプレート送信の機能の追加
+	
+
+	* index.php: 
+
 2015-11-16  IKENO Naoki  <nao@kyo-to.net>
 
 	* lib/accountlib.php (ACCOUNT):

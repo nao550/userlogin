@@ -49,10 +49,12 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
     $_SESSION['name'] = h($userdata['name']);
     $_SESSION['usertype_cd'] = h($userdata['usertype_cd']);
     $stat = $stat . 'mode : succsess user login.<br />';
+
     include_once 'lib/mailaddrlib.php';
     $smail = new MailAddr;
-    $smail->chkMailSend( $account, $_SESSION['id']);
+    $smail->chkAddrMailSend( $account, $_SESSION['name'], $_SESSION['id']);
     echo 'mailsend.';
+
   } else {
     $_SESSION['account'] = '';
     $_SESSION['name'] = '';

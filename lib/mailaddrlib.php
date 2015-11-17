@@ -12,23 +12,23 @@ class MailAddr {
   //  -1 未認証、 1 認証済
 
   
-  function chkMailSend( $email, $sid ){
+  function chkAddrMailSend( $email, $name, $sid ){
     // アドレスチェックメールの送信
     global $CFG;
+
     $authurl = $CFG['HOMEPATH'] . '/mailaddr.php?sid=' . $sid;  
     $toaddr = "$email";  // 宛先
     $subject = "講師登録のユーザ登録をありがとうございます。";
 
-    $mailbody = <<< EOFMB
-$email 様
+    // テンプレートからメール本文の読み込み
+    ob_start();
+    require_once 'chkAddrMail.tpl';
+    $mailbody = ob_get_contents();
+    ob_end_clean();
 
-講師登録サイトへのご登録をありがとうございます。
-
-以下のURLをクリックして、メールアドレスの認証をお願いいたします。      
-      
-$authurl
-
-EOFMB;
+    $target = array("%name%", "%email%", "%authurl%" );
+    $replace = array($name, $email, $authurl );
+    $mailbody = str_replace ($target, $replace, $mailbody);
 
     $fromaddr = "From: " . mb_encode_mimeheader ('"名前"') .  "<noreply@morris.co.jp>";
     $mailbody = mb_convert_encoding ($mailbody, "iso-2022-jp", "UTF-8");
@@ -36,7 +36,7 @@ EOFMB;
     
   }
   
-  function chkMail( $email, $sid = ''){
+  function chkMailSid( $email, $sid = ''){
     // $email のチェック
     global $CFG;
 
@@ -56,9 +56,9 @@ EOFMB;
     if ( $userdata === FALSE ) {
       return 0; // email, SID がなし
     } else if ( $userdata['usertype_cd'] > 0 ) {
-      return 1;
+      return 1;   // 登録ずみ
     } else if ( $userdata['usertype_cd'] < 0 ) {
-      return 2;
+      return 2;  // メールアドレス未認証未登録
     } 
   }
 

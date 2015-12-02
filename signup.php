@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="ja">
 <?PHP
 include_once 'config.php';
 include_once 'lib/function.php';
@@ -7,6 +9,7 @@ include_once 'lib/mailaddrlib.php';
 session_start();
 $errormode = 0;
 
+isset( $_SESSION['id'] )? $sid = $_SESSION['id'] : $_SESSION['id'] = session_id();
 isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 if ( $name !== '' ){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
@@ -16,21 +19,37 @@ isset($_POST['mode'])? $mode = h($_POST['mode']) : $mode = '';
 
 if ( $mode !== '' ){
 
+  // ユーザ名チェック
+  isset($_POST['accountname'])? $accountname = h($_POST['accountname']) : $accountname = '';
+  $ac = new ACCOUNT;
+  if ( $accountname === '' ) {
+    $errormode = 1;
+    $accountname_er = 1;  // ユーザ名入力なしエラー
+  } else if ( $ac->isAccountname($accountname)) {
+    $errormode = 1;
+    $accountname_er = 2;  // ユーザ名重複エラー
+  } else if ( strlen($accountname) < 6 || strlen($accountname) > 20) {
+    $errormode = 1;
+    $accountname_er = 3; // ユーザ名長エラー
+  } else {
+    $errormode = 0;
+    $mail_er = 0;    
+  }
+
+  
   // メールアドレス入力チェック
   isset($_POST['email'])? $email = h($_POST['email']) : $email = '';
-  if ( $email !== '' ){
     $ac = new ACCOUNT;
-    if ( $ac->isAccount($email)) {
+    if ( $email === '' ){
       $errormode = 1;
-      $mail_er = 1;  // アドレス重複エラー
+      $email_er = 1;  // アドレス入力なしエラー
+    } else if ( $ac->isMail($email)) {
+      $errormode = 1;
+      $email_er = 2;  // アドレス重複エラー
     } else {
       $errormode = 0;
-      $mail_er = 0;    
+      $email_er = 0;    
     }
-  } else {
-    $errormode = 1;
-    $mail_er = 2;  // アドレス入力なしエラー
-  }
 
   // パスワードチェック
   // TODO: パスワード長の設定をconfig設定化する
@@ -62,9 +81,8 @@ if ( $mode !== '' ){
   if ( $mode === 'submit' && $errormode === 0 ){
     // アカウント登録
     $ac = new ACCOUNT;
-    $ac->addAccount( $email, $pwd1, $sei, $mei, $email, $_SESSION['id'] );
-
-    $name = $sei . ' ' . $meil;
+    $ac->addAccount( $accountname, $pwd1, $sei, $mei, $email, $sid );
+    $name = $sei . ' ' . $mei;
     // 確認メールの送信
     $mailsend = new MailAddr;
     $mailsend->chkAddrMailSend( $email, $name, $sid);
@@ -80,8 +98,6 @@ if ( $mode !== '' ){
 
 
 ?>
-<!DOCTYPE html>
-<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -91,7 +107,7 @@ if ( $mode !== '' ){
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="./favicon.ico">
-
+1
     <title>利用者登録</title>
 
     <!-- Latest compiled and minified CSS -->
@@ -157,22 +173,51 @@ if ( $mode !== '' ){
 	    <h2>利用者登録</h2>
 
 	    <div class="form-group">
+	      <label for="accountname" class="col-sm-3 control-label">ユーザ名</label>
+	      <div class="col-sm-9">
+		<input type="text" id="accountname" name="accountname" class="form-control"  placeholder="ユーザ名を入力してください" <?php if(isset($accountname)) print("value=\"" . $accountname . "\""); ?>>
+	      </div>
+	    </div>
+	    <?php
+	    if (isset($accountname_er)){
+	      if ($accountname_er === 1 ){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		ユーザ名を入力してください.
+	        </p>
+		</div>
+EOL;
+	      } else if  ($accountname_er === 2){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+	        ユーザ名はすでに存在します.
+	        </p>
+		</div>
+EOL;
+	      } else if  ($accountname_er === 3){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		ユーザ名を6文字以上20文字以下で入力してください.
+	        </p>
+		</div>
+EOL;
+              }
+	    }
+	      ?>
+	    
+
+	    <div class="form-group">
 	      <label for="email" class="col-sm-3 control-label">メールアドレス</label>
 	      <div class="col-sm-9">
 		<input type="email" id="email" name="email" class="form-control"  placeholder="メールアドレスを入力してください" <?php if(isset($email)) print("value=\"" . $email . "\""); ?>>
 	      </div>
 	    </div>
 	    <?php
-	    if (isset($mail_er)){
-	      if ($mail_er === 1 ){
-		print <<< EOL
-		<div class="col-sm-offset-3 col-sm-9">
-		<p class="bg-danger mailerror">
-		アドレスはすでに存在します.
-	        </p>
-		</div>
-EOL;
-	      } else if  ($mail_er === 2){
+	    if (isset($email_er)){
+	      if ($email_er === 1 ){
 		print <<< EOL
 		<div class="col-sm-offset-3 col-sm-9">
 		<p class="bg-danger mailerror">
@@ -180,10 +225,20 @@ EOL;
 	        </p>
 		</div>
 EOL;
-	      }
-	    }
+	      } else if  ($email_er === 2){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+	        メールアドレスはすでに存在します.
+	        </p>
+		</div>
+EOL;
+               }
+             }
 	      ?>
 	    
+
+
 	    <div class="form-group">	    	  
 	      <label for="pwd1" class="control-label col-sm-3">パスワード</label>
 	      <div class="col-sm-9">
@@ -258,17 +313,6 @@ EOL;
 	    }
 	      ?>
 
-<!--
-	    <div class="form-group">
-	      <div class="col-sm-offset-3 col-sm-9">
-		<div class="checkbox">
-		  <label>
-		    <input type="checkbox"> Remember me
-		  </label>
-		</div>
-	      </div>
-	    </div>
--->
 	    <div class="form-group">
 	      <div class="col-sm-offset-3 col-sm-10">
 		<button type="submit" id="sbumit_sign" class="btn btn-default">登録</button>
@@ -280,7 +324,8 @@ EOL;
 	</div>
 
 	<?php
-	} else if ( $mode === 'addaccount' ){ // アカウント登録完了画面
+// アカウント登録完了画面
+	} else if ( $mode === 'addaccount' ){ 
 	?>
 	<div class="form-signin">
 	  <p>アカウント登録が完了しました。<br />

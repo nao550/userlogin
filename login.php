@@ -7,25 +7,25 @@ $errormode = 0;
 
 // ログイン処理
 if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
-  if ( ! isset($_POST['account']) ||  ! isset($_POST['password'])){
+  if ( ! isset($_POST['accountname']) ||  ! isset($_POST['password'])){
     $errormode = 1;
   }
 
   // エラーなしなのでログインチャレンジ
   if ( $errormode == 0 ){ 
-    $account = h($_POST['account']);
+    $accountname = h($_POST['accountname']);
     $password = h($_POST['password']);
     $ac = new ACCOUNT;
-    $userdata = $ac->Login( $account, $password);
+    $userdata = $ac->Login( $accountname, $password);
   }
 
   // ログインの確認
   if ( ($userdata !== FALSE) ){
-    $_SESSION['account'] = $account;
+    $_SESSION['accountname'] = $accountname;
     $_SESSION['name'] = h($userdata['name']);
     $_SESSION['level'] = h($userdata['level']);
   } else {
-    $_SESSION['account'] = '';
+    $_SESSION['accountname'] = '';
     $_SESSION['name'] = '';
     $_SESSION['level'] = '';
     $errormode = 2;
@@ -84,10 +84,10 @@ if ( $name !== '') {
 
       <form class="form-signin" action="login.php" method="POST">
         <h2 class="form-signin-heading">ログイン</h2>
-	<label for="inputEmail" class="sr-only">メールアドレス：</label>
-	<input type="email" id="inputEmail" name="account" class="form-control" placeholder="Email address" required autofocus>
+	<label for="inputaccountname" class="sr-only">アカウント名：</label>
+	<input type="text" id="inputaccountname" name="accountname" class="form-control" placeholder="アカウント名" required autofocus>
 	<label for="inputPassword" class="sr-only">パスワード：</label>
-	<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+	<input type="password" id="inputPassword" name="password" class="form-control" placeholder="パスワード" required>
 <!--
 	<div class="checkbox">
 	  <label>
@@ -99,9 +99,9 @@ if ( $name !== '') {
 	<button class="btn btn-lg btn-primary btn-block" type="submit">ログイン</button>
 	<?php
 	if ( $errormode === 1 ){
-	  print("	<p class=\"bg-denger\">メールアドレスとパスワードを入力してください。</p>");
+	  print("	<p class=\"bg-denger\">アカウント名とパスワードを入力してください。</p>");
 	} else if ( $errormode === 2 ) {
-	  print("	<p class=\"bg-denger\">メールアドレスかパスワードが違います。</p>");
+	  print("	<p class=\"bg-denger\">アカウント名かパスワードが違います。</p>");
 	}
 	?>
       </form>

@@ -1,3 +1,18 @@
+2015-12-02  IKENO Naoki  <nao@kyo-to.net>
+
+	* signup.php:
+	accountname への変更の完成
+	login.php の完成
+	next: 確認メールでアカウントの有効化
+
+2015-11-24  IKENO Naoki  <nao@kyo-to.net>
+
+	* signup.php (if):
+	next: accountlib.php にメールアドレス重複チェックの追加
+	
+
+	* index.php: 
+
 2015-11-17  IKENO Naoki  <nao@kyo-to.net>
 
 	* chksid.php :

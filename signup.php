@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
 <?PHP
 include_once 'config.php';
 include_once 'lib/function.php';
@@ -98,6 +96,8 @@ if ( $mode !== '' ){
 
 
 ?>
+<!DOCTYPE html>
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -8,8 +8,8 @@ class MailAddr {
   // メールアドレスチェッククラス
   // chkMailSend チェック用メールの送信
   // chkMail  メールの情報があるかのチェック
-  // AuthMail メールアドレス許可、ユーザタイプを -1 から 1 へ変更
-  //  -1 未認証、 1 認証済
+  // AuthMail メールアドレス許可、ユーザタイプを 0 から 1 へ変更
+  //  0 未認証、 1 認証済
 
   
   function chkAddrMailSend( $email, $name, $sid ){
@@ -43,7 +43,7 @@ class MailAddr {
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("SELECT name, usertype_cd, email FROM users WHERE sid = $sid");
+      $sql = ("SELECT name, usertype_cd, email FROM users WHERE sid = :sid");
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
       $stmt->execute();
@@ -53,23 +53,50 @@ class MailAddr {
       die();
     }
     if ( $userdata === FALSE ) {
-      return 0; //  SID がなし
-    } else if ( $userdata['usertype_cd'] > 0 ) {
-      return 1;   // 登録ずみ
-    } else if ( $userdata['usertype_cd'] < 0 ) {
-      return 2;  // メールアドレス未認証未登録
+      return 1; //  SID がDBになし
+    } else if ( $userdata['type_cd'] > 0 ) {
+      return 2;   // 通常ユーザとして登録ずみ
+    } else if ( $userdata['type_cd'] === 0 ) {
+      return 0;  // メールアドレス未認証未登録
     } 
   }
 
+  function chkMailSidDate( $sid ){
+    // SID の登録日付のチェック
+    // $CFG['LIMITDATE'] 越えていたら、アカウント削除
+    global $CFG;
+    $date = date("Y-m-d");
+    
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("SELECT name, usertype_cd, email FROM users WHERE sid = :sid");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
+      $stmt->execute();
+      $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+    if ( $userdata !== FALSE ){
+      // TODO: 日付の比較を作成
+    }
+    
+  }
+  
   function AuthMail( $sid = ''){
     // $email の登録
     global $CFG;
-
+    $date = date("Y-m-d");
+    
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("UPDATE users SET usertype_cd = '1' WHERE sid = $sid");
+      $sql = ("UPDATE users SET usertype_cd = '1', moddate = :moddate  WHERE sid = :sid");
       $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':moddate', $date, PDO::PARAM_STR);
       $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
       $stmt->execute();
     }catch (PDOException $e){

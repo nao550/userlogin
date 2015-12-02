@@ -1,5 +1,8 @@
 2015-12-02  IKENO Naoki  <nao@kyo-to.net>
 
+	* mailaddr.php:
+	作成中
+
 	* signup.php:
 	accountname への変更の完成
 	login.php の完成
@@ -8,7 +11,7 @@
 2015-11-24  IKENO Naoki  <nao@kyo-to.net>
 
 	* signup.php (if):
-	next: accountlib.php にメールアドレス重複チェックの追加
+	next: accountlib.php にメールアドレス重複チェックの追加 →ok
 	
 
 	* index.php: 
@@ -16,7 +19,7 @@
 2015-11-17  IKENO Naoki  <nao@kyo-to.net>
 
 	* chksid.php :
-	next:git 作成したので動作チェックする
+	next:git 作成したので動作チェックする →ok
 	
 	* signup.php :
 	処理しているクラスの返り値のチェックは必要ないか？

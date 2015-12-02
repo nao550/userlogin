@@ -36,7 +36,7 @@ class ACCOUNT {
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("INSERT INTO users (account, name, usertype_cd, password, email, sid, regdate, moddate, passch) VALUES ( :accountname, :name, '1', :password, :email, :sid, :regdate, :moddate, :passch)");
+      $sql = ("INSERT INTO users (account, name, usertype_cd, password, email, sid, regdate, moddate, passch) VALUES ( :accountname, :name, '0', :password, :email, :sid, :regdate, :moddate, :passch)");
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':accountname', $accountname, PDO::PARAM_STR);
       $stmt->bindValue(':name', $name, PDO::PARAM_STR);

@@ -41,7 +41,7 @@ if ( $mode !== '' ){
     if ( $email === '' ){
       $errormode = 1;
       $email_er = 1;  // アドレス入力なしエラー
-    } else if ( $ac->isMail($email)) {
+    } else if ( $ac->isMailAddr($email)) {
       $errormode = 1;
       $email_er = 2;  // アドレス重複エラー
     } else {

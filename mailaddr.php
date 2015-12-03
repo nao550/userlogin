@@ -2,6 +2,8 @@
 include_once 'config.php';
 include_once 'lib/function.php';
 include_once 'lib/mailaddrlib.php';
+include_once 'lib/accountlib.php';
+
 
 session_start();
 $errormode = 0;
@@ -13,7 +15,9 @@ if ( $name !== '' || $sid === ''){
 }
 
 $mail = new MailAddr;
-$errormode = $mail->chkMailSid( $sid );
+$ac = new ACCOUNT;
+
+$errormode = $ac->chkMailSid( $sid );
 // 1: SID がDBにない
 // 2: 通常ユーザとして登録済
 // 3: SIDの登録日が $CFG['LIMITDATE'] より古い
@@ -22,12 +26,12 @@ $errormode = $mail->chkMailSid( $sid );
 if ( $errormode === 1 || $errormode === 2){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
 } else if ( $errormode === 3 ){
-  $mail->delAccountSid($sid);
+  $ac->delAccountSid($sid);
 }
 
 // チェックして問題なかったので、SID を有効化
 if ( $errormode === 4  ) {
-  $mail->AuthMail( $sid );
+  $ac->AuthMailAddr( $sid );
 }
 
 switch( $errormode ){

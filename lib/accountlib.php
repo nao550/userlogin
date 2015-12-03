@@ -79,7 +79,44 @@ class ACCOUNT {
     }
   }
 
-  function isMail( $email ){
+    function delAccountSid( $sid = ''){
+    // $sid のアカウントを削除
+    global $CFG;
+
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("DELETE FROM users WHERE sid = :sid");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
+      $stmt->execute();
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+    return true;
+  }
+
+  function AuthMailAddr( $sid = ''){
+    // $email の登録
+    global $CFG;
+    $date = date("Y-m-d");
+    
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("UPDATE users SET usertype_cd = '1', moddate = :moddate  WHERE sid = :sid");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':moddate', $date, PDO::PARAM_STR);
+      $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
+      $stmt->execute();
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+  }
+  
+  function isMailAddr( $email ){
     // メールアドレスがあれば、true, なければ false
     global $CFG;
 
@@ -103,7 +140,42 @@ class ACCOUNT {
     }
   }
 
-  
+  function chkMailSid( $sid = ''){
+    // $email のチェック
+    // $CFG['LIMITDATE'] SIDの有効期限のチェック
+    global $CFG;
+
+    $limitdate = date("Y-m-d",mktime(0, 0, date("s"), date("m"), date("d") - $CFG['LIMITDATE'], date("Y")));
+    
+    $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
+    try{
+      $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
+      $sql = ("SELECT name, usertype_cd, regdate FROM users WHERE sid = :sid");
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);
+      $stmt->execute();
+      $userdata = $stmt->fetch(PDO::FETCH_ASSOC);
+    }catch (PDOException $e){
+      print('Error:'.$e->getMessage());
+      die();
+    }
+
+    if ( $userdata === FALSE ) {
+      return 1; //  SID がDBになし
+    }
+    if ( $userdata['usertype_cd'] > '0' ) {
+      return 2;   // 通常ユーザとして登録ずみ
+    }
+    if ( $userdata['regdate'] < $limitdate ){
+      // regdate が昨日よりも前の場合 3 を返す
+      return 3;
+    } 
+    if ( $userdata['usertype_cd'] === '0' ) {
+      return 4;  // メールアドレス未認証未登録
+    }
+    return 0; // 出るはずのないぶぶん
+  }
+ 
   private function get_password_hash($accountname, $pwd) {
     global $CFG;
 

@@ -65,7 +65,9 @@ class MailAddr {
     // SID の登録日付のチェック
     // $CFG['LIMITDATE'] 越えていたら、アカウント削除
     global $CFG;
-    $date = date("Y-m-d");
+        $date = date("Y-m-d",mktime(0, 0, date("s"), date("m"), date("d") - 1, date("Y")));
+$date = mktime(0, 0, 0, date("m"), date("d") -1, date("Y"));
+    
     
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
 

@@ -26,9 +26,13 @@ if ( $errormode === '1' ){
 }
 
 // 日付をチェックして古ければアカウント削除
-// $errormode = $mail->chkMailSidDate($sid);
+// 3: 日付が古いので再度登録要請
+$errormode = $mail->chkMailSidDate($sid);
+
 
 // チェックして問題なかったので、SID を有効化
+// 4: メールアドレス認証OK
+
 // usertype_cd = 1;
 
 

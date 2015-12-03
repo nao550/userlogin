@@ -83,8 +83,10 @@ foreach (array("id", "account","name") as $v){
   echo $stat; echo "<br>";
   print_r( page_url_path() . "<br />\n");
 
-  $date = date("Y-m-d");
-  echo $date;
+
+
+
+     echo $date;
   
 ?>
 

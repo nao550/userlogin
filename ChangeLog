@@ -1,3 +1,9 @@
+2015-12-03  IKENO Naoki  <nao@kyo-to.net>
+
+	* mailaddr.php 
+	メールアドレス認証の完成
+	next: maillerlib.php にあるアカウント関係のコードを accountlib.php に移動
+
 2015-12-02  IKENO Naoki  <nao@kyo-to.net>
 
 	* mailaddr.php:

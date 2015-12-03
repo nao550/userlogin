@@ -9,36 +9,45 @@ $errormode = 0;
 isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
 isset( $_GET['sid'] )? $sid = h($_GET['sid']) : $sid = '';
 if ( $name !== '' || $sid === ''){
-  header('Location:' . $CFG['HOMEPATH'] . '/index.php');
+//  header('Location:' . $CFG['HOMEPATH'] . '/index.php');
 }
 
 $mail = new MailAddr;
 $errormode = $mail->chkMailSid( $sid );
-// 0: メールアドレス認証未認証
 // 1: SID がDBにない
 // 2: 通常ユーザとして登録済
+// 3: SIDの登録日が $CFG['LIMITDATE'] より古い
+// 4: メールアドレス認証未認証
 
-if ( $errormode === '1' ){
+if ( $errormode === 1 || $errormode === 2){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
-} else if ( $errormode === '2' ){
-  $ac = new ACCOUNT;
-  $ac->delAccountSid($sid);
+} else if ( $errormode === 3 ){
+  $mail->delAccountSid($sid);
 }
 
-// 日付をチェックして古ければアカウント削除
-// 3: 日付が古いので再度登録要請
-$errormode = $mail->chkMailSidDate($sid);
-
-
 // チェックして問題なかったので、SID を有効化
-// 4: メールアドレス認証OK
+if ( $errormode === 4  ) {
+  $mail->AuthMail( $sid );
+}
 
-// usertype_cd = 1;
-
-
+switch( $errormode ){
+case 0:
+  $message = "<p>SIDエラー</p>";
+  break;
+case 2:
+  $message = "<p>登録済</p>";
+  break;
+case 3:
+  $message = "<p>認証メールの有効期限が切れています。<br />再度登録をしてください。</p>";
+  break;
+case 4:
+  $message = "<p>メールアドレスを認証しました。</p>";
+  break;
+default:
+  $message = "なんかエラー";
+}
 
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -107,13 +116,8 @@ $errormode = $mail->chkMailSidDate($sid);
 
       <div class="col-sm-8">
 
-k	<?= $message ?>
-	// 指定されたセッションIDはありません
+	<?= $message; ?>
 
-	// 有効期限が切れています
-
-	// メールアドレスを認証しました
-	
       </div>
 
       <div class="col-sm-2"></div>

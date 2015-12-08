@@ -1,3 +1,11 @@
+2015-12-08  IKENO Naoki  <nao@kyo-to.net>
+	*signup.php (if):
+	task: html 中にあるエラーメッセージを上でチェックして変数に設定して、html文中では変数を表示するだけにする
+	
+	task: パスワード変更などのプロフィール変更画面の作成
+	task: 管理者画面の作成
+	
+	
 2015-12-03  IKENO Naoki  <nao@kyo-to.net>
 
 	* mailaddr.php 

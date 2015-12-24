@@ -34,24 +34,23 @@ if ( $mode !== '' ){
     $accountname_er = 4; // 英数字以外エラー
     echo "hogehoge";
   } else {
-    $errormode = 0;
     $mail_er = 0;    
   }
 
   
   // メールアドレス入力チェック
   isset($_POST['email'])? $email = h($_POST['email']) : $email = '';
-    $ac = new ACCOUNT;
-    if ( $email === '' ){
-      $errormode = 1;
-      $email_er = 1;  // アドレス入力なしエラー
-    } else if ( $ac->isMailAddr($email)) {
-      $errormode = 1;
-      $email_er = 2;  // アドレス重複エラー
-    } else {
-      $errormode = 0;
-      $email_er = 0;    
-    }
+  $ac = new ACCOUNT;
+
+  if ( $email === '' ){
+    $errormode = 1;
+    $email_er = 1;  // アドレス入力なしエラー
+  } else if ( $ac->isMailAddr($email)) {
+    $errormode = 1;
+    $email_er = 2;  // アドレス重複エラー
+  } else {
+    $email_er = 0;    
+  }
 
   // パスワードチェック
   // TODO: パスワード長の設定をconfig設定化する
@@ -67,16 +66,16 @@ if ( $mode !== '' ){
   } else if ( $pwd1 !== $pwd2 ) {
     $errormode = 2;
     $pass_er = 3; // パスワードミスマッチエラー
-/*
-英数字以外禁止にしたが、英数字以外も有効にしたほうがいいので
-一旦削除。
-TODO: preg_match() でチェックする？
+    /*
+    英数字以外禁止にしたが、英数字以外も有効にしたほうがいいので
+    一旦削除。
+    TODO: preg_match() でチェックする？
     } else if ( ctype_alnum($pwd1)) {
     $errormode = 2;
     $pass_er = 4; // 英数字以外エラー
-*/
+     */
   } else {
-    $errormode = 0;
+    $pass_er = 0;
   }
 
   // 名前入力チェック

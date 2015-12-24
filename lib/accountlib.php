@@ -169,7 +169,7 @@ class ACCOUNT {
       return 2;   // 通常ユーザとして登録ずみ
     }
     if ( $userdata['regdate'] < $limitdate ){
-      // regdate が昨日よりも前の場合 3 を返す
+      // regdate が $limitdate よりも前の場合 3 を返す
       return 3;
     } 
     if ( $userdata['usertype_cd'] === '0' ) {

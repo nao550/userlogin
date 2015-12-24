@@ -132,6 +132,14 @@
 
 2015-10-27  IKENO Naoki  <nao@kyo-to.net>
 
+	* ユーザアカウントレベルについて
+	0：仮登録者、n日で消去される
+	1；正式登録者、メールアドレス認証をした
+	2：スタッフ
+	3：管理者
+
+
+	
 	* index.php:
 	PHPでユーザログインのためのフォームとかの部分だ	けを作る
 
@@ -142,6 +150,8 @@
 	pass, text, ハッシュパスワード、
 	level, int, アカウントレベル
 	name, text, 表示名
+	sei, char(20), 姓
+	mei, char(10)
 	mail, text, メールアドレス
 	regdate, date
 	moddate, date

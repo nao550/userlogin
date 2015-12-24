@@ -36,10 +36,10 @@ if ( $errormode === 4  ) {
 
 switch( $errormode ){
 case 0:
-  $message = "<p>SIDエラー</p>";
+  $message = "<p>SIDエラーです。再度登録からお願いします。</p>";
   break;
 case 2:
-  $message = "<p>登録済</p>";
+  $message = "<p>メールアドレスはすでに登録されています。</p>";
   break;
 case 3:
   $message = "<p>認証メールの有効期限が切れています。<br />再度登録をしてください。</p>";
@@ -48,7 +48,7 @@ case 4:
   $message = "<p>メールアドレスを認証しました。</p>";
   break;
 default:
-  $message = "なんかエラー";
+  $message = "なんか予想外のエラー、コインいっこ入れる";
 }
 
 ?>

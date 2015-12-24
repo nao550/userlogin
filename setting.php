@@ -9,7 +9,7 @@ $errormode = 0;
 
 isset( $_SESSION['id'] )? $sid = $_SESSION['id'] : $_SESSION['id'] = session_id();
 isset($_SESSION['name'])? $name = $_SESSION['name'] : $name = '';
-if ( $name !== '' ){
+if ( $name === '' ){
   header('Location:' . $CFG['HOMEPATH'] . '/index.php');
 }
 

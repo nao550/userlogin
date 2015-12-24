@@ -98,8 +98,8 @@ if ( $mode !== '' ){
     
     $mode = 'addaccount';
     $_SESSION['account'] = $email;
-    $_SESSION['name'] = $sei . " " . $mei;
-    $_SESSION['level'] = '1';
+    $_SESSION['name'] = $sei . " " . $mei . "(仮)";
+    $_SESSION['level'] = '0';
   }
 
 }

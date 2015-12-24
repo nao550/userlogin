@@ -1,5 +1,9 @@
 2015-12-24  IKENO Naoki  <nao@kyo-to.net>
 
+	* lib/accountlib.php (ACCOUNT):
+	user!name を user!sei user!mei に分割
+	コードも一通り修正
+
 	* signup.php:
 	ログインユーザ名を英数字に限定
 	

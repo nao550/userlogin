@@ -12,7 +12,7 @@ class ACCOUNT {
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("SELECT name, usertype_cd FROM users WHERE account = :account AND password = :password");
+      $sql = ("SELECT name, sei, mei, usertype_cd FROM users WHERE account = :account AND password = :password");
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':account', $accountname, PDO::PARAM_STR);
       $stmt->bindValue(':password', $pwd, PDO::PARAM_STR);
@@ -36,10 +36,12 @@ class ACCOUNT {
     $dsn = 'mysql:host=' . $CFG['DBSV'] . ';dbname=' . $CFG['DBNM'] . ';charset=utf8';
     try{
       $pdo = new PDO($dsn, $CFG['DBUSER'], $CFG['DBPASS']);
-      $sql = ("INSERT INTO users (account, name, usertype_cd, password, email, sid, regdate, moddate, passch) VALUES ( :accountname, :name, '0', :password, :email, :sid, :regdate, :moddate, :passch)");
+      $sql = ("INSERT INTO users (account, name, sei, mei, usertype_cd, password, email, sid, regdate, moddate, passch) VALUES ( :accountname, :name, :sei, :mei, '0', :password, :email, :sid, :regdate, :moddate, :passch)");
       $stmt = $pdo->prepare($sql);
       $stmt->bindValue(':accountname', $accountname, PDO::PARAM_STR);
       $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+      $stmt->bindValue(':sei', $sei, PDO::PARAM_STR);
+      $stmt->bindValue(':mei', $mei, PDO::PARAM_STR);      
       $stmt->bindValue(':password', $pwd, PDO::PARAM_STR);
       $stmt->bindValue(':email', $email, PDO::PARAM_STR);
       $stmt->bindValue(':sid', $sid, PDO::PARAM_STR);

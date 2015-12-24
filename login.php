@@ -22,7 +22,7 @@ if ( isset($_POST['mode']) && $_POST['mode'] === 'login'){
   // ログインの確認
   if ( ($userdata !== FALSE) ){
     $_SESSION['accountname'] = $accountname;
-    $_SESSION['name'] = h($userdata['name']);
+    $_SESSION['name'] = h($userdata['sei'] . " " . $userdata['mei'] );
     $_SESSION['level'] = h($userdata['level']);
   } else {
     $_SESSION['accountname'] = '';

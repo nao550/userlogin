@@ -29,6 +29,10 @@ if ( $mode !== '' ){
   } else if ( strlen($accountname) < 6 || strlen($accountname) > 20) {
     $errormode = 1;
     $accountname_er = 3; // ユーザ名長エラー
+  } else if (! ctype_alnum($accountname)) {
+    $errormode = 1;
+    $accountname_er = 4; // 英数字以外エラー
+    echo "hogehoge";
   } else {
     $errormode = 0;
     $mail_er = 0;    
@@ -63,6 +67,14 @@ if ( $mode !== '' ){
   } else if ( $pwd1 !== $pwd2 ) {
     $errormode = 2;
     $pass_er = 3; // パスワードミスマッチエラー
+/*
+英数字以外禁止にしたが、英数字以外も有効にしたほうがいいので
+一旦削除。
+TODO: preg_match() でチェックする？
+    } else if ( ctype_alnum($pwd1)) {
+    $errormode = 2;
+    $pass_er = 4; // 英数字以外エラー
+*/
   } else {
     $errormode = 0;
   }
@@ -201,6 +213,14 @@ EOL;
 		<div class="col-sm-offset-3 col-sm-9">
 		<p class="bg-danger mailerror">
 		ユーザ名を6文字以上20文字以下で入力してください.
+	        </p>
+		</div>
+EOL;
+	      } else if  ($accountname_er === 4){
+		print <<< EOL
+		<div class="col-sm-offset-3 col-sm-9">
+		<p class="bg-danger mailerror">
+		ユーザ名は英数字で入力してください.
 	        </p>
 		</div>
 EOL;

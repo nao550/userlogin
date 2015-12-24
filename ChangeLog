@@ -1,5 +1,12 @@
 2015-12-24  IKENO Naoki  <nao@kyo-to.net>
 
+	* setting.php:
+	next: setting.php を作成していく
+	変更を一時保存するためのテーブルを作成する必要がありそう
+
+	これができたら次がユーザ一覧などの管理者画面か
+	
+
 	* lib/accountlib.php (ACCOUNT):
 	user!name を user!sei user!mei に分割
 	コードも一通り修正
